@@ -1,0 +1,103 @@
+repos:
+  # Black: 自动格式化
+  - repo: https://github.com/psf/black
+    rev: 25.1.0   # 固定 black 版本
+    hooks:
+      - id: black
+        language_version: python3
+        files: ^scripts/   # 只检查 scripts 下的 Python 文件
+        exclude: ^scripts/^data/    # 排除 data 文件夹
+
+  # Flake8: 风格检查
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0   # 固定 flake8 版本
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-bugbear]  # 可选: 提高检查能力
+        files: ^scripts/
+        exclude: ^scripts/^data/    # 排除 data 文件夹
+
+  # Pylint: 静态分析
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        files: ^scripts/
+        exclude: ^scripts/data/    # 排除 data 文件夹
+        
+  # Clang-format (C++)
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: clang-format
+        entry: clang-format -i
+        language: system
+        files: ^face_track_ctrl/.*\.(cpp|c|h|hpp)$
+
+  # C++: cppcheck (静态分析)
+  - repo: local
+    hooks:
+      - id: cppcheck
+        name: cppcheck
+        entry: >
+            cppcheck --enable=all   
+            --language=c++ 
+            --template=gcc
+            --force
+            --relative-paths=.
+            --inconclusive   
+            --std=c++17   
+            --check-level=exhaustive
+            -I face_track_ctrl/include   
+            --suppress=missingIncludeSystem   
+            --suppress=unusedFunction
+            --suppress=unusedStructMember
+            --suppress=unmatchedSuppression
+            --suppress=unreadVariable
+            --suppress=functionStatic
+            --error-exitcode=1  
+        language: system
+        files: ^face_track_ctrl/.*\.(cpp|c|h|hpp)$
+        
+    #  - id: clang-tidy
+    #    name: clang-tidy
+    #    entry: clang-tidy
+    #    language: system
+    #    files: ^face_track_ctrl/.*\.(cpp|c|h|hpp)$
+    
+  # Clang-format (C)
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: clang-format
+        entry: clang-format -i
+        language: system
+#        files: ^servo_control/.*\.(c|h)$
+        files: ^(servo_control/Core/Src/servo_control.c|servo_control/Core/Inc/servo_control.h|servo_control/Core/Src/uart1_send_dma.c|servo_control/Core/Inc/uart1_send_dma.h|servo_control/Core/Src/uart2_receive.c|servo_control/Core/Inc/uart2_receive.h|)$
+  
+  # C: cppcheck (静态分析)
+  - repo: local
+    hooks:
+      - id: cppcheck
+        name: cppcheck
+        entry: >
+            cppcheck --enable=all
+            --language=c
+            --template=gcc
+            --force
+            --relative-paths=.
+            --inconclusive
+            --std=c99
+            -I servo_control/Core/Inc
+            --suppress=missingInclude
+            --suppress=unusedFunction
+            --suppress=missingIncludeSystem 
+            --suppress=constParameterPointer
+            --suppress=unmatchedSuppression
+            --error-exitcode=1
+        language: system
+#        files: ^servo_control/.*\.(c|h)$
+        files: ^(servo_control/Core/Src/servo_control.c|servo_control/Core/Inc/servo_control.h|servo_control/Core/Src/uart1_send_dma.c|servo_control/Core/Inc/uart1_send_dma.h|servo_control/Core/Src/uart2_receive.c|servo_control/Core/Inc/uart2_receive.h|)$
+  
