@@ -1,0 +1,49 @@
+Debug/
+# 忽略 CubeIDE 生成的 build 文件
+Debug/
+Release/
+build/
+
+# 忽略编译中间文件
+*.o
+*.su
+*.d
+*.elf
+*.map
+*.list
+*.bak
+*.dep
+*.axf
+*.crf
+*.htm
+*.iex
+*.lnp
+*.lst
+*.tra
+*.ts
+*.log
+
+# 忽略自动生成的汇编文件
+*.s
+*.cyclo
+
+# 忽略 backup 文件
+*~ 
+*.swp
+*.tmp
+
+# 忽略 system 文件
+.DS_Store
+Thumbs.db
+
+# 忽略 CubeMX 生成的临时文件
+*.ioc.bak
+*.ioc.xml
+
+# STM32CubeIDE：保留 .cproject/.project/.settings（所以这里不忽略）
+# .cproject
+# .project
+# .settings/
+
+# 忽略用户本地配置
+*.launch
